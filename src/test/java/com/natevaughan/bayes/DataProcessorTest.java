@@ -1,13 +1,13 @@
 package com.natevaughan.bayes;
 
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import org.junit.Test;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * Created by nate on 1/14/17.
  */
-public class DataCounterTest {
+public class DataProcessorTest {
 
     private final String TARGET_COLUMN_HEADER = "TARGET";
     private final String TARGET_VALUE = "yes";
@@ -31,18 +31,19 @@ public class DataCounterTest {
     };
 
     @Test
-    public void testGolfData() throws DataCounterException {
-        Target target = new Target(TARGET_COLUMN_HEADER, TARGET_VALUE);
-        DataCounter dataCounter = DataCounter.create(HEADER, CLASSES, target);
-        dataCounter.process(ROWS);
-        Tuple2[] vals = new Tuple2[] {
-                new Tuple2<String, String>("outlook", "rainy"),
-                new Tuple2<String, String>("temp", "hot"),
-                new Tuple2<String, String>("humidity", "high"),
-                new Tuple2<String, String>("windy", "true")
-        };
-        boolean prediction = dataCounter.getPrediction(vals);
-        System.out.println(prediction);
+    public void testGolfData()  {
+        Table<Long, String, String> data = createMockData();
+    }
+
+    private Table<Long, String, String> createMockData() {
+
+        Table<Long, String, String> data = HashBasedTable.create();
+        for (int i = 0; i < ROWS.length; ++i) {
+            for (int j = 0; j < HEADER.length; ++j) {
+                data.put((long) i, HEADER[j], ROWS[i][j]);
+            }
+        }
+        return data;
     }
 
 }
