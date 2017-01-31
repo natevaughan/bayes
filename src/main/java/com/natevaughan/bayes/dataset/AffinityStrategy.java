@@ -1,4 +1,4 @@
-package com.natevaughan.bayes;
+package com.natevaughan.bayes.dataset;
 
 /**
  * Created by nate on 1/30/17.

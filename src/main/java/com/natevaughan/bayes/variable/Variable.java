@@ -1,7 +1,5 @@
 package com.natevaughan.bayes.variable;
 
-import com.natevaughan.bayes.Tuple2;
-
 import java.util.Collection;
 
 /**
