@@ -9,4 +9,5 @@ public interface Target {
     Variable getTargetVariable();
     Collection<Value> getPositiveValues();
     Collection<Variable> getRelevantVariables();
+    boolean isPositive(Value value);
 }

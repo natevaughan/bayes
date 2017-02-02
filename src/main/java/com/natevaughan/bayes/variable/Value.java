@@ -7,4 +7,7 @@ public interface Value {
     Variable getVariable();
     String getName();
     Long getPositiveCount(Value value);
+    Long getNegativeCount(Value value);
+    void incrementPositiveCountFor(Value value);
+    void incrementNegativeCountFor(Value value);
 }

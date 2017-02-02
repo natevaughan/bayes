@@ -2,12 +2,22 @@ package com.natevaughan.bayes.processor;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import com.natevaughan.bayes.dataset.BaseDataset;
+import com.natevaughan.bayes.dataset.Dataset;
+import com.natevaughan.bayes.variable.BinaryTarget;
+import com.natevaughan.bayes.variable.CategoricalValue;
+import com.natevaughan.bayes.variable.CategoricalVariable;
+import com.natevaughan.bayes.variable.Value;
+import com.natevaughan.bayes.variable.Variable;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by nate on 1/14/17.
  */
-public class DatasetPreProcessorTest {
+public class BayeseanProcessingChainTest {
 
     private final String TARGET_COLUMN_HEADER = "TARGET";
     private final String TARGET_VALUE = "yes";
@@ -32,18 +42,27 @@ public class DatasetPreProcessorTest {
 
     @Test
     public void testGolfData()  {
-        Table<Long, String, String> data = createMockData();
+        CategoricalProcessingChain chain = new CategoricalProcessingChain();
+        chain.addProcessingStep(new BayeseanProcessor());
+        chain.processAll(createMockDataset());
+        Dataset predictions = chain.predictAll(createMockDataset());
     }
 
-    private Table<Long, String, String> createMockData() {
+    private Dataset createMockDataset() {
+        Map<Integer, CategoricalVariable> variableMap = new HashMap<>();
+        for (int i = 0; i < HEADER.length; ++i) {
+            variableMap.put(i, new CategoricalVariable(HEADER[i]));
+        }
 
-        Table<Long, String, String> data = HashBasedTable.create();
+        Table<Long, Variable, Value> data = HashBasedTable.create();
         for (int i = 0; i < ROWS.length; ++i) {
             for (int j = 0; j < HEADER.length; ++j) {
-                data.put((long) i, HEADER[j], ROWS[i][j]);
+                data.put((long) i, variableMap.get(j), new CategoricalValue(ROWS[i][j], variableMap.get(j)));
             }
         }
-        return data;
+        BaseDataset ds = new BaseDataset(data);
+        ds.setTarget(new BinaryTarget(variableMap.get(4)));
+        return ds;
     }
 
 }
