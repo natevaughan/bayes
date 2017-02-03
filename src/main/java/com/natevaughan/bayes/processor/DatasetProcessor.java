@@ -7,5 +7,4 @@ import com.natevaughan.bayes.dataset.Dataset;
  */
 public interface DatasetProcessor {
     Dataset process(Dataset dataset);
-    Dataset predict(Dataset dataset);
 }

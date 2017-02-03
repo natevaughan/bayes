@@ -25,4 +25,5 @@ public class AffinityProcessor implements DatasetProcessor {
     public Dataset process(Dataset dataset) {
         return null;
     }
+
 }

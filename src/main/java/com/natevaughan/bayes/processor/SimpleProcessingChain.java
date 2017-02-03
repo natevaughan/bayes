@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by nate on 2/1/17.
  */
-public class CategoricalProcessingChain implements ProcessingChain {
+public class SimpleProcessingChain implements ProcessingChain {
 
     private List<DatasetProcessor> processingSteps = new ArrayList<>();
 
@@ -25,13 +25,5 @@ public class CategoricalProcessingChain implements ProcessingChain {
         for (DatasetProcessor processor : this.processingSteps) {
             next = processor.process(next);
         }
-    }
-
-    public Dataset predictAll(Dataset dataset) {
-        Dataset next = dataset;
-        for (DatasetProcessor processor : this.processingSteps) {
-            next = processor.predict(next);
-        }
-        return next;
     }
 }

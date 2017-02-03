@@ -1,8 +1,6 @@
 package com.natevaughan.bayes.variable;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -11,7 +9,7 @@ import java.util.Map;
 public class CategoricalVariable implements Variable {
 
     private final String name;
-    private final Collection<Value> values = new HashSet<>();
+    private final Map<Value, Value> values = new HashMap<>();
     private final Map<Variable, Double> affinityMap = new HashMap<>();
 
     public CategoricalVariable(String name) {
@@ -22,11 +20,35 @@ public class CategoricalVariable implements Variable {
         return name;
     }
 
-    public Collection<Value> getValues() {
+    public Map<Value, Value> getValues() {
         return values;
+    }
+
+    public Value getValue(Value value) {
+        return values.get(value);
     }
 
     public Double getAffinity(Variable variable) {
         return affinityMap.get(variable);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CategoricalVariable that = (CategoricalVariable) o;
+
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

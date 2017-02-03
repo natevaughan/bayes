@@ -11,5 +11,4 @@ public interface ProcessingChain {
     List<DatasetProcessor> getProcessingSteps();
     void addProcessingStep(DatasetProcessor processor);
     void processAll(Dataset dataset);
-    Dataset predictAll(Dataset dataset);
 }

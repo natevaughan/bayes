@@ -1,12 +1,13 @@
 package com.natevaughan.bayes.variable;
 
-import java.util.Collection;
+import java.util.Map;
 
 /**
  * Created by nate on 1/30/17.
  */
 public interface Variable {
     String getName();
-    Collection<Value> getValues();
+    Map<Value, Value> getValues();
+    Value getValue(Value value);
     Double getAffinity(Variable variable);
 }
