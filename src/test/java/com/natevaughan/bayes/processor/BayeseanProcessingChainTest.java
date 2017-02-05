@@ -58,10 +58,10 @@ public class BayeseanProcessingChainTest {
     private Dataset createSinglePrediction() {
         Map<Integer, CategoricalVariable> variableMap = createHeaderMap();
         Table<Long, Variable, Value> data = HashBasedTable.create();
-        data.put(0L, variableMap.get(0), new CategoricalValue("rainy", variableMap.get(0)));
-        data.put(0L, variableMap.get(1), new CategoricalValue("hot", variableMap.get(1)));
+        data.put(0L, variableMap.get(0), new CategoricalValue("sunny", variableMap.get(0)));
+        data.put(0L, variableMap.get(1), new CategoricalValue("cool", variableMap.get(1)));
         data.put(0L, variableMap.get(2), new CategoricalValue("normal", variableMap.get(2)));
-        data.put(0L, variableMap.get(3), new CategoricalValue("true", variableMap.get(3)));
+        data.put(0L, variableMap.get(3), new CategoricalValue("false", variableMap.get(3)));
         BaseDataset ds = new BaseDataset(data);
         return ds;
     }
