@@ -1,6 +1,7 @@
 package com.natevaughan.bayes.variable;
 
 import com.natevaughan.bayes.dataset.Dataset;
+import groovy.lang.Tuple2;
 
 import java.util.Collection;
 
@@ -9,14 +10,12 @@ import java.util.Collection;
  */
 public interface Target {
     Variable getTargetVariable();
-    Value getPositiveValue();
     Collection<Variable> getRelevantVariables();
-    Long getPositiveCount();
-    Long getNegativeCount();
     void incrementPositiveCount();
     void incrementNegativeCount();
     boolean isPositive(Value value);
     Dataset predict(Dataset dataset);
+    boolean predict(Collection<Tuple2<Variable, Value>> values);
     void setRelevantVariables(Collection<Variable> variables);
     Double getEpsilon();
     void setEpsilon(Double epsilon);

@@ -1,4 +1,4 @@
-package com.natevaughan.bayes
+package com.natevaughan.bayes.cli
 
 /**
  * Created by nate on 2/12/17.

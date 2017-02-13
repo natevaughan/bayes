@@ -2,6 +2,7 @@ package com.natevaughan.bayes.variable;
 
 import com.google.common.collect.Table;
 import com.natevaughan.bayes.dataset.Dataset;
+import groovy.lang.Tuple2;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -54,6 +55,11 @@ public class BinaryTarget implements Target {
 
     public boolean isPositive(Value value) {
         return positiveValue.equals(value);
+    }
+
+    public boolean predict(Collection<Tuple2<Variable, Value>> values) {
+        // XXX todo
+        return false;
     }
 
     public Dataset predict(Dataset dataset) {

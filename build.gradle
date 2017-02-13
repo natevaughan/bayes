@@ -12,7 +12,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Naive Bayes Command-Line Trainer',
                 'Implementation-Version': version,
-                'Main-Class': 'com.natevaughan.bayes.CommandTrainer'
+                'Main-Class': 'com.natevaughan.bayes.cli.BayesCLI'
     }
     baseName = project.name
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

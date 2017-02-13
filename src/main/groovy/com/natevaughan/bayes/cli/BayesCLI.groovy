@@ -1,4 +1,4 @@
-package com.natevaughan.bayes
+package com.natevaughan.bayes.cli
 
 import com.google.common.collect.Table
 import com.natevaughan.bayes.dataset.BaseDataset
