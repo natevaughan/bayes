@@ -5,6 +5,7 @@ import com.natevaughan.bayes.dataset.Dataset;
 import groovy.lang.Tuple2;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class BinaryTarget implements Target {
 
     private Double epsilon = 0.5;
     private final Variable targetVariable;
-    private Collection<Variable> relevantVaribales = new HashSet<>();
+    private Map<Variable, Variable> relevantVariables = new HashMap<>();
     private Value positiveValue;
     private Long positiveCount = 0L;
     private Long negativeCount = 0L;
@@ -34,7 +35,7 @@ public class BinaryTarget implements Target {
     }
 
     public Collection<Variable> getRelevantVariables() {
-        return relevantVaribales;
+        return relevantVariables.keySet();
     }
 
     public Long getPositiveCount() {
@@ -67,7 +68,7 @@ public class BinaryTarget implements Target {
         for (Long rowId : table.rowKeySet()) {
             Double likelihoodPositive = 1.0;
             Double likelihoodNegative = 1.0;
-            for (Variable var : relevantVaribales) {
+            for (Variable var : getRelevantVariables()) {
                 Value tbaleVal = table.get(rowId, var);
                 Value varVal = var.getValue(tbaleVal);
                 Map<Value, Long> counts = varVal.getCounts(targetVariable);
@@ -83,15 +84,18 @@ public class BinaryTarget implements Target {
                 likelihoodPositive *= (positiveCount.doubleValue() + epsilon);
                 likelihoodNegative *= (negativeCount.doubleValue() + epsilon);
             }
-            likelihoodPositive /= Math.pow(positiveCount.doubleValue(), (relevantVaribales.size() - 1));
-            likelihoodNegative /= Math.pow(negativeCount.doubleValue(), (relevantVaribales.size() - 1));
+            likelihoodPositive /= Math.pow(positiveCount.doubleValue(), (relevantVariables.size() - 1));
+            likelihoodNegative /= Math.pow(negativeCount.doubleValue(), (relevantVariables.size() - 1));
             table.put(rowId, targetVariable,  new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable));
         }
         return dataset;
     }
 
     public void setRelevantVariables(Collection<Variable> variables) {
-        this.relevantVaribales = variables;
+        this.relevantVariables = new HashMap<>();
+        for (Variable var : variables) {
+            relevantVariables.put(var, var);
+        }
     }
 
     public Double getEpsilon() {

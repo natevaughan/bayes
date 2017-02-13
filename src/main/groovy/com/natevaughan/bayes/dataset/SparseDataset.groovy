@@ -14,15 +14,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException
 class SparseDataset implements Dataset {
 
     private final Target target
-    private final List<Variable> variables = new ArrayList()
+    private final Map<Variable, Variable> variables = new HashMap()
 
     SparseDataset(Target target) {
         this.target = target
-    }
-
-    @Override
-    Table<Long, Variable, Value> getDataset() {
-        throw new NotImplementedException()
     }
 
     Target getTarget() {
@@ -30,10 +25,37 @@ class SparseDataset implements Dataset {
     }
 
     Collection<Variable> getVariables() {
-        variables
+        variables.keySet()
     }
 
-    void train(Tuple2<Variable, Value> target, Collection<Tuple2<Variable, Value>> otherValues) {
+    void train(Value targetVal, Collection<Value> otherValues) {
+        if (target.isPositive(targetVal)) {
+            target.incrementPositiveCount()
+        } else {
+            target.incrementNegativeCount()
+        }
 
+        for (Value value : otherValues) {
+            Variable relevantVar = null
+            Value relevantVal = null
+            if (!variables.get(value.variable)) {
+                variables.put(value.variable, value.variable)
+                relevantVar = value.variable
+            } else {
+                relevantVar = variables.get(value.variable)
+            }
+            if (!relevantVar.values.get(value)) {
+                relevantVar.values.put(value, value)
+                relevantVal = value
+            } else {
+                relevantVal = relevantVar.getValue(value)
+            }
+            relevantVal.incrementCountFor(targetVal)
+        }
+    }
+
+    // XXX todo improve contract
+    Table<Long, Variable, Value> getDataset() {
+        throw new NotImplementedException()
     }
 }
