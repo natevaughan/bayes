@@ -1,4 +1,4 @@
-package com.natevaughan.bayes.facade
+package com.natevaughan.bayes.predictor
 
 import com.google.common.collect.HashBasedTable
 import com.natevaughan.bayes.dataset.BaseDataset
@@ -14,15 +14,17 @@ import groovy.transform.CompileStatic
 
 /**
  * Created by nate on 2/18/17.
+ *
+ * Facade for predictor that scans a dataset with n processing steps
  */
 @CompileStatic
-class BayesianRelationshipPredictor implements Predictor {
+class SelectiveRelationalPredictor implements Predictor {
 
     private final Target target
     private final ProcessingChain processingChain
     private final BaseDataset dataset
 
-    BayesianRelationshipPredictor(Target target) {
+    SelectiveRelationalPredictor(Target target) {
         this.target = target
         this.dataset = new BaseDataset(HashBasedTable.create())
         this.dataset.setTarget(target)

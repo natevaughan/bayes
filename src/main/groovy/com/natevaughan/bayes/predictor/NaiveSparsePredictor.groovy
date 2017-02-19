@@ -1,7 +1,5 @@
-package com.natevaughan.bayes.facade
+package com.natevaughan.bayes.predictor
 
-import com.google.common.collect.HashBasedTable
-import com.natevaughan.bayes.dataset.BaseDataset
 import com.natevaughan.bayes.dataset.SparseDataset
 import com.natevaughan.bayes.processor.BayesianCountProcessor
 import com.natevaughan.bayes.processor.SelectAllVariablesProcessor
@@ -9,18 +7,21 @@ import com.natevaughan.bayes.processor.SimpleProcessingChain
 import com.natevaughan.bayes.variable.Target
 import com.natevaughan.bayes.variable.Value
 import com.natevaughan.bayes.variable.Variable
-import sun.java2d.pipe.SpanShapeRenderer
 
 /**
  * Created by nate on 2/18/17.
+ *
+ * A naive predictor that considers all evidence separately and thus does not
+ * require a certain number of variables to make a prediction. Useful for spam
+ * filtering or other text-based filtering
  */
-class SparseBayesianPredictor implements Predictor {
+class NaiveSparsePredictor implements Predictor {
 
     Target target
     SparseDataset dataset
     SimpleProcessingChain processingChain
 
-    SparseBayesianPredictor(Target target) {
+    NaiveSparsePredictor(Target target) {
         this.target = target
         this.dataset = new SparseDataset(target)
         this.processingChain = new SimpleProcessingChain()

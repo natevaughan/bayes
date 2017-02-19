@@ -1,6 +1,6 @@
 package com.natevaughan.bayes.processor;
 
-import com.natevaughan.bayes.facade.SparseBayesianPredictor;
+import com.natevaughan.bayes.predictor.NaiveSparsePredictor;
 import com.natevaughan.bayes.variable.*;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class SparseDatasetTest {
     @Ignore // WIP
     @Test
     public void simpleSparsePredictorTest() {
-        SparseBayesianPredictor predictor = createSparsePredictor();
+        NaiveSparsePredictor predictor = createSparsePredictor();
         predictor.train(createTrainingRow());
         Value prediction = predictor.predict(createTrainingRow());
         assertNotNull(prediction);
@@ -45,9 +45,9 @@ public class SparseDatasetTest {
         return row;
     }
 
-    private SparseBayesianPredictor createSparsePredictor() {
+    private NaiveSparsePredictor createSparsePredictor() {
         Target t = new BinaryTarget(targetVar, trueVal);
-        SparseBayesianPredictor predictor = new SparseBayesianPredictor(t);
+        NaiveSparsePredictor predictor = new NaiveSparsePredictor(t);
         return predictor;
     }
 }
