@@ -14,10 +14,12 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException
 class SparseDataset implements Dataset {
 
     private final Target target
-    private final Map<Variable, Variable> variables = new HashMap()
+    private final Map<Variable, Variable> variables
+    private final List<Map<Variable, Value>> data
 
     SparseDataset(Target target) {
         this.target = target
+        this.data = []
     }
 
     Target getTarget() {
@@ -44,6 +46,7 @@ class SparseDataset implements Dataset {
             } else {
                 relevantVar = variables.get(value.variable)
             }
+
             if (!relevantVar.values.get(value)) {
                 relevantVar.values.put(value, value)
                 relevantVal = value

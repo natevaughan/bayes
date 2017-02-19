@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * Created by nate on 1/14/17.
  */
-public class BayeseanProcessingChainTest {
+public class BayesianProcessingChainTest {
 
     private final String TARGET_COLUMN_HEADER = "TARGET";
     private final String TARGET_VALUE = "yes";
@@ -46,7 +46,7 @@ public class BayeseanProcessingChainTest {
     public void testGolfData()  {
         SimpleProcessingChain chain = new SimpleProcessingChain();
         chain.addProcessingStep(new SelectAllVariablesProcessor());
-        chain.addProcessingStep(new BayeseanCountProcessor());
+        chain.addProcessingStep(new BayesianCountProcessor());
         Dataset dataset = createMockDataset();
         chain.processAll(dataset);
         Target target = dataset.getTarget();

@@ -28,6 +28,10 @@ public class CategoricalVariable implements Variable {
         return values.get(value);
     }
 
+    public void addValue(Value value) {
+        this.values.put(value, value);
+    }
+
     public Double getAffinity(Variable variable) {
         return affinityMap.get(variable);
     }

@@ -3,7 +3,7 @@ package com.natevaughan.bayes.cli
 import com.google.common.collect.Table
 import com.natevaughan.bayes.dataset.BaseDataset
 import com.natevaughan.bayes.dataset.Dataset
-import com.natevaughan.bayes.processor.BayeseanCountProcessor
+import com.natevaughan.bayes.processor.BayesianCountProcessor
 import com.natevaughan.bayes.processor.SelectAllVariablesProcessor
 import com.natevaughan.bayes.processor.SimpleProcessingChain
 import com.natevaughan.bayes.variable.Value
@@ -41,7 +41,7 @@ class BayesCLI {
     Dataset process(Table<Long, Variable, Value> data) {
         SimpleProcessingChain chain = new SimpleProcessingChain()
         chain.addProcessingStep(new SelectAllVariablesProcessor())
-        chain.addProcessingStep(new BayeseanCountProcessor())
+        chain.addProcessingStep(new BayesianCountProcessor())
         Dataset dataset = new BaseDataset(data)
         chain.processAll(dataset)
         dataset.getTarget().setEpsilon(0.1D)

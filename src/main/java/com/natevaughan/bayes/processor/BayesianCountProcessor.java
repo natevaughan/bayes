@@ -9,7 +9,7 @@ import com.natevaughan.bayes.variable.Variable;
 /**
  * Created by nate on 2/1/17.
  */
-public class BayeseanCountProcessor implements DatasetProcessor {
+public class BayesianCountProcessor implements DatasetProcessor {
     public Dataset process(Dataset dataset) {
         Table<Long, Variable, Value> table = dataset.getDataset();
         Target target = dataset.getTarget();
