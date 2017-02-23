@@ -1,4 +1,4 @@
-package com.natevaughan.bayes.processor;
+package com.natevaughan.bayes.predictor;
 
 import com.google.common.collect.Table;
 import com.natevaughan.bayes.dataset.Dataset;
@@ -22,7 +22,7 @@ public class BayesianCountProcessor implements DatasetProcessor {
                 target.incrementNegativeCount();
             }
 
-            for (Variable var : target.getRelevantVariables()) {
+            for (Variable var : target.getRelevantVariables().keySet()) {
                 Value val = table.get(rowId, var);
                 if (var.getValues().get(val) == null) {
                     var.getValues().put(val, val);

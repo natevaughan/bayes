@@ -13,7 +13,7 @@ public class CategoricalVariable implements Variable {
     private final Map<Variable, Double> affinityMap = new HashMap<>();
 
     public CategoricalVariable(String name) {
-        this.name = name;
+        this.name = name.toLowerCase();
     }
 
     public String getName() {

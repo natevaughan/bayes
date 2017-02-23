@@ -1,6 +1,7 @@
 package com.natevaughan.bayes.dataset
 
 import com.google.common.collect.Table
+import com.natevaughan.bayes.exception.BadRowException
 import com.natevaughan.bayes.variable.Target
 import com.natevaughan.bayes.variable.Value
 import com.natevaughan.bayes.variable.Variable
@@ -14,8 +15,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException
 class SparseDataset implements Dataset {
 
     private final Target target
-    private final Map<Variable, Variable> variables
-    private final List<Map<Variable, Value>> data
+    private final List<Tuple2<Value, Collection<Value>>> data = []
 
     SparseDataset(Target target) {
         this.target = target
@@ -27,24 +27,27 @@ class SparseDataset implements Dataset {
     }
 
     Collection<Variable> getVariables() {
-        variables.keySet()
+        target.relevantVariables.keySet()
     }
 
-    void train(Value targetVal, Collection<Value> otherValues) {
+    void train(Value targetVal, Collection<Value> row) {
+        if (targetVal == null || targetVal?.getVariable() != target.targetVariable) {
+            throw new BadRowException("Cannot train on row with mismatched target")
+        }
         if (target.isPositive(targetVal)) {
             target.incrementPositiveCount()
         } else {
             target.incrementNegativeCount()
         }
 
-        for (Value value : otherValues) {
+        for (Value value : row) {
             Variable relevantVar = null
             Value relevantVal = null
-            if (!variables.get(value.variable)) {
-                variables.put(value.variable, value.variable)
+            if (!target.relevantVariables.get(value.variable)) {
+                target.relevantVariables.put(value.variable, value.variable)
                 relevantVar = value.variable
             } else {
-                relevantVar = variables.get(value.variable)
+                relevantVar = target.relevantVariables.get(value.variable)
             }
 
             if (!relevantVar.values.get(value)) {
@@ -55,6 +58,7 @@ class SparseDataset implements Dataset {
             }
             relevantVal.incrementCountFor(targetVal)
         }
+        this.data.add(new Tuple2<Value, Collection<Value>>(targetVal, row))
     }
 
     // XXX todo improve contract

@@ -3,9 +3,9 @@ package com.natevaughan.bayes.cli
 import com.google.common.collect.Table
 import com.natevaughan.bayes.dataset.BaseDataset
 import com.natevaughan.bayes.dataset.Dataset
-import com.natevaughan.bayes.processor.BayesianCountProcessor
-import com.natevaughan.bayes.processor.SelectAllVariablesProcessor
-import com.natevaughan.bayes.processor.SimpleProcessingChain
+import com.natevaughan.bayes.predictor.BayesianCountProcessor
+import com.natevaughan.bayes.predictor.SelectAllVariablesProcessor
+import com.natevaughan.bayes.predictor.SimpleProcessingChain
 import com.natevaughan.bayes.variable.Value
 import com.natevaughan.bayes.variable.Variable
 import groovy.transform.CompileStatic
@@ -29,7 +29,7 @@ class BayesCLI {
                 println 'ok, let\'s make some predictions'
             }
             if (Actions.TRAIN.is(action)) {
-                println 'ready to train target'
+                println 'ready to trailAll target'
             }
             if (Actions.TARGETS.is(action)) {
                 println 'here are your available targets'

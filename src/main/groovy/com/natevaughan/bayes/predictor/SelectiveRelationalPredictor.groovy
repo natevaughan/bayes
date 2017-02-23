@@ -2,14 +2,8 @@ package com.natevaughan.bayes.predictor
 
 import com.google.common.collect.HashBasedTable
 import com.natevaughan.bayes.dataset.BaseDataset
-import com.natevaughan.bayes.processor.BayesianCountProcessor
-import com.natevaughan.bayes.processor.ProcessingChain
-import com.natevaughan.bayes.processor.SelectAllVariablesProcessor
-import com.natevaughan.bayes.processor.SimpleProcessingChain
-
 import com.natevaughan.bayes.variable.Target
 import com.natevaughan.bayes.variable.Value
-import com.natevaughan.bayes.variable.Variable
 import groovy.transform.CompileStatic
 
 /**
@@ -33,15 +27,15 @@ class SelectiveRelationalPredictor implements Predictor {
         this.processingChain.addProcessingStep(new BayesianCountProcessor())
     }
 
-    void train(Map<Variable, Value> data) {
+    void train(Tuple2<Value, Collection<Value>> data) {
         dataset.getDataset()
     }
 
-    void train(Collection<Map<Variable, Value>> data) {
+    void trainAll(Collection<Tuple2<Value, Collection<Value>>> data) {
 
     }
 
-    Value predict(Map<Variable, Value> data) {
+    Value predict(Collection<Value> data) {
         return null
     }
 

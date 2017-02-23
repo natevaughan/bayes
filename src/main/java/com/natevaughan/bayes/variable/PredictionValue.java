@@ -32,6 +32,6 @@ public class PredictionValue extends BooleanValue {
 
     @Override
     public String toString() {
-        return name.toString() + "(" + Double.toString(likelihoodPositive / (likelihoodPositive + likelihoodNegative)).substring(0, 5) + ")";
+        return name.toString() + "(" + Double.toString(likelihoodPositive / (likelihoodPositive + likelihoodNegative)) + ")";
     }
 }

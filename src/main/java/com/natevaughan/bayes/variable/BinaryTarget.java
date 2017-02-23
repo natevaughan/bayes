@@ -2,11 +2,9 @@ package com.natevaughan.bayes.variable;
 
 import com.google.common.collect.Table;
 import com.natevaughan.bayes.dataset.Dataset;
-import groovy.lang.Tuple2;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -34,8 +32,8 @@ public class BinaryTarget implements Target {
         return positiveValue;
     }
 
-    public Collection<Variable> getRelevantVariables() {
-        return relevantVariables.keySet();
+    public Map<Variable, Variable> getRelevantVariables() {
+        return relevantVariables;
     }
 
     public Long getPositiveCount() {
@@ -58,9 +56,31 @@ public class BinaryTarget implements Target {
         return positiveValue.equals(value);
     }
 
-    public boolean predict(Collection<Tuple2<Variable, Value>> values) {
-        // XXX todo
-        return false;
+    public PredictionValue predict(Collection<Value> values) {
+        Double likelihoodPositive = 1.0;
+        Double likelihoodNegative = 1.0;
+        for (Value value : values) {
+            Variable relevant = this.relevantVariables.get(value.getVariable());
+            if (relevant == null) {
+                continue;
+            }
+            Value varVal = relevant.getValue(value);
+            Map<Value, Long> counts = varVal.getCounts(targetVariable);
+            Long positiveCount = 0L;
+            Long negativeCount = 0L;
+            for (Value val : counts.keySet()) {
+                if (isPositive(val)) {
+                    positiveCount += counts.get(val);
+                } else {
+                    negativeCount += counts.get(val);
+                }
+            }
+            likelihoodPositive *= (positiveCount.doubleValue() + epsilon);
+            likelihoodNegative *= (negativeCount.doubleValue() + epsilon);
+        }
+        likelihoodPositive /= Math.pow(positiveCount.doubleValue(), (relevantVariables.size() - 1));
+        likelihoodNegative /= Math.pow(negativeCount.doubleValue(), (relevantVariables.size() - 1));
+        return new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable);
     }
 
     public Dataset predict(Dataset dataset) {
@@ -68,7 +88,7 @@ public class BinaryTarget implements Target {
         for (Long rowId : table.rowKeySet()) {
             Double likelihoodPositive = 1.0;
             Double likelihoodNegative = 1.0;
-            for (Variable var : getRelevantVariables()) {
+            for (Variable var : getRelevantVariables().keySet()) {
                 Value tbaleVal = table.get(rowId, var);
                 Value varVal = var.getValue(tbaleVal);
                 Map<Value, Long> counts = varVal.getCounts(targetVariable);

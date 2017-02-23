@@ -1,4 +1,4 @@
-package com.natevaughan.bayes.processor;
+package com.natevaughan.bayes.predictor;
 
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;

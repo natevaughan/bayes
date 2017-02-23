@@ -9,7 +9,7 @@ public class CategoricalValue extends AbstractValue {
     public final CategoricalVariable variable;
 
     public CategoricalValue(String name, CategoricalVariable variable) {
-        this.name = name;
+        this.name = name.toLowerCase();
         this.variable = variable;
     }
 
@@ -28,7 +28,7 @@ public class CategoricalValue extends AbstractValue {
 
         CategoricalValue that = (CategoricalValue) o;
 
-        if (!name.equals(that.name)) return false;
+        if (!name.equals(that.name.toLowerCase())) return false;
         return variable.equals(that.variable);
     }
 
