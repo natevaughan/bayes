@@ -3,6 +3,8 @@ package com.natevaughan.bayes.variable;
 import com.google.common.collect.Table;
 import com.natevaughan.bayes.dataset.Dataset;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,12 +59,15 @@ public class BinaryTarget implements Target {
     }
 
     public PredictionValue predict(Collection<Value> values) {
-        Double likelihoodPositive = 1.0;
-        Double likelihoodNegative = 1.0;
+        BigDecimal likelihoodPositive = new BigDecimal(1.0);
+        BigDecimal likelihoodNegative = new BigDecimal(1.0);
+        Integer wordcount = 0;
         for (Value value : values) {
             Variable relevant = this.relevantVariables.get(value.getVariable());
             if (relevant == null) {
                 continue;
+            } else {
+                ++wordcount;
             }
             Value varVal = relevant.getValue(value);
             Map<Value, Long> counts = varVal.getCounts(targetVariable);
@@ -75,40 +80,12 @@ public class BinaryTarget implements Target {
                     negativeCount += counts.get(val);
                 }
             }
-            likelihoodPositive *= (positiveCount.doubleValue() + epsilon);
-            likelihoodNegative *= (negativeCount.doubleValue() + epsilon);
+            likelihoodPositive = likelihoodPositive.multiply(new BigDecimal(positiveCount.doubleValue() + epsilon));
+            likelihoodNegative = likelihoodNegative.multiply(new BigDecimal(negativeCount.doubleValue() + epsilon));
         }
-        likelihoodPositive /= Math.pow(positiveCount.doubleValue(), (relevantVariables.size() - 1));
-        likelihoodNegative /= Math.pow(negativeCount.doubleValue(), (relevantVariables.size() - 1));
+        likelihoodPositive = likelihoodPositive.divide(new BigDecimal(Math.pow(positiveCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
+        likelihoodNegative = likelihoodNegative.divide(new BigDecimal(Math.pow(negativeCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
         return new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable);
-    }
-
-    public Dataset predict(Dataset dataset) {
-        Table<Long, Variable, Value> table = dataset.getDataset();
-        for (Long rowId : table.rowKeySet()) {
-            Double likelihoodPositive = 1.0;
-            Double likelihoodNegative = 1.0;
-            for (Variable var : getRelevantVariables().keySet()) {
-                Value tbaleVal = table.get(rowId, var);
-                Value varVal = var.getValue(tbaleVal);
-                Map<Value, Long> counts = varVal.getCounts(targetVariable);
-                Long positiveCount = 0L;
-                Long negativeCount = 0L;
-                for (Value value : counts.keySet()) {
-                    if (isPositive(value)) {
-                        positiveCount += counts.get(value);
-                    } else {
-                        negativeCount += counts.get(value);
-                    }
-                }
-                likelihoodPositive *= (positiveCount.doubleValue() + epsilon);
-                likelihoodNegative *= (negativeCount.doubleValue() + epsilon);
-            }
-            likelihoodPositive /= Math.pow(positiveCount.doubleValue(), (relevantVariables.size() - 1));
-            likelihoodNegative /= Math.pow(negativeCount.doubleValue(), (relevantVariables.size() - 1));
-            table.put(rowId, targetVariable,  new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable));
-        }
-        return dataset;
     }
 
     public void setRelevantVariables(Collection<Variable> variables) {

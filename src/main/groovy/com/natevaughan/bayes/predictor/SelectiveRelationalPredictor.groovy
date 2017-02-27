@@ -14,6 +14,7 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class SelectiveRelationalPredictor implements Predictor {
 
+    String name
     private final Target target
     private final ProcessingChain processingChain
     private final BaseDataset dataset

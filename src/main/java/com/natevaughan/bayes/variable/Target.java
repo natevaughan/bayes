@@ -14,7 +14,6 @@ public interface Target {
     void incrementPositiveCount();
     void incrementNegativeCount();
     boolean isPositive(Value value);
-    Dataset predict(Dataset dataset);
     PredictionValue predict(Collection<Value> values);
     Map<Variable, Variable> getRelevantVariables();
     void setRelevantVariables(Collection<Variable> variables);

@@ -1,37 +1,24 @@
 package com.natevaughan.bayes.variable;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Created by nate on 2/3/17.
  */
 public class PredictionValue extends BooleanValue {
 
-    private Double likelihoodPositive;
-    private Double likelihoodNegative;
+    private BigDecimal likelihoodPositive;
+    private BigDecimal likelihoodNegative;
 
-    public Double getLikelihoodPositive() {
-        return likelihoodPositive;
-    }
-
-    public PredictionValue(Double likelihoodPositive, Double likelihoodNegative, Variable variable) {
-        super((likelihoodPositive > likelihoodNegative), variable);
+    public PredictionValue(BigDecimal likelihoodPositive, BigDecimal likelihoodNegative, Variable variable) {
+        super((likelihoodPositive.compareTo(likelihoodNegative) > 0), variable);
         this.likelihoodPositive = likelihoodPositive;
-        this.likelihoodNegative = likelihoodNegative;
-    }
-
-    public void setLikelihoodPositive(Double likelihoodPositive) {
-        this.likelihoodPositive = likelihoodPositive;
-    }
-
-    public Double getLikelihoodNegative() {
-        return likelihoodNegative;
-    }
-
-    public void setLikelihoodNegative(Double likelihoodNegative) {
         this.likelihoodNegative = likelihoodNegative;
     }
 
     @Override
     public String toString() {
-        return name.toString() + "(" + Double.toString(likelihoodPositive / (likelihoodPositive + likelihoodNegative)) + ")";
+        return name.toString() + "(" + (likelihoodPositive.divide(likelihoodPositive.add(likelihoodNegative), 10, RoundingMode.HALF_UP)) + ")";
     }
 }

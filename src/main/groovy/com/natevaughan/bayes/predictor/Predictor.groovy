@@ -12,6 +12,8 @@ import groovy.transform.CompileStatic
  */
 @CompileStatic
 interface Predictor {
+    String getName()
+    void setName(String name)
     void train(Tuple2<Value, Collection<Value>> data)
     void trainAll(Collection<Tuple2<Value, Collection<Value>>> data)
     Value predict(Collection<Value> data)

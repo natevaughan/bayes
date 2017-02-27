@@ -1,10 +1,10 @@
 package com.natevaughan.bayes.predictor
 
-import com.natevaughan.bayes.dataset.SparseDataset
 import com.natevaughan.bayes.exception.BadRowException
 import com.natevaughan.bayes.variable.PredictionValue
 import com.natevaughan.bayes.variable.Target
 import com.natevaughan.bayes.variable.Value
+import com.natevaughan.bayes.variable.Variable
 import groovy.transform.CompileStatic
 
 /**
@@ -17,17 +17,17 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class NaiveSparsePredictor implements Predictor {
 
+    String name
     Target target
-    SparseDataset dataset
+    private final List<Tuple2<Value, Collection<Value>>> data = []
 
     NaiveSparsePredictor(Target target) {
         this.target = target
-        this.dataset = new SparseDataset(target)
     }
 
 
     void train(Tuple2<Value, Collection<Value>> data) {
-        dataset.train(data.first, data.second)
+        train(data.first, data.second)
     }
 
     void trainAll(Collection<Tuple2<Value, Collection<Value>>> data) {
@@ -40,7 +40,39 @@ class NaiveSparsePredictor implements Predictor {
         return target.predict(data)
     }
 
+    void train(Value targetVal, Collection<Value> row) {
+        if (targetVal == null || targetVal?.getVariable() != target.targetVariable) {
+            throw new BadRowException("Cannot train on row with mismatched target")
+        }
+        if (target.isPositive(targetVal)) {
+            target.incrementPositiveCount()
+        } else {
+            target.incrementNegativeCount()
+        }
+
+        for (Value value : row) {
+            Variable relevantVar = null
+            Value relevantVal = null
+            if (!target.relevantVariables.get(value.variable)) {
+                target.relevantVariables.put(value.variable, value.variable)
+                relevantVar = value.variable
+            } else {
+                relevantVar = target.relevantVariables.get(value.variable)
+            }
+
+            if (!relevantVar.values.get(value)) {
+                relevantVar.values.put(value, value)
+                relevantVal = value
+            } else {
+                relevantVal = relevantVar.getValue(value)
+            }
+            relevantVal.incrementCountFor(targetVal)
+        }
+        this.data.add(new Tuple2<Value, Collection<Value>>(targetVal, row))
+    }
+
     void retrain() {
 
     }
+
 }

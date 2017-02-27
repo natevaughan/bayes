@@ -6,7 +6,7 @@ package com.natevaughan.bayes.cli
 enum Actions {
     QUIT,
     OPTIMIZE,
-    TARGETS,
+    LIST,
     TRAIN,
     NEW,
     PREDICT

@@ -7,12 +7,15 @@ import com.natevaughan.bayes.dataset.Dataset;
 import com.natevaughan.bayes.variable.BinaryTarget;
 import com.natevaughan.bayes.variable.CategoricalValue;
 import com.natevaughan.bayes.variable.CategoricalVariable;
+import com.natevaughan.bayes.variable.PredictionValue;
 import com.natevaughan.bayes.variable.Target;
 import com.natevaughan.bayes.variable.Value;
 import com.natevaughan.bayes.variable.Variable;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -51,19 +54,18 @@ public class BayesianProcessingChainTest {
         chain.processAll(dataset);
         Target target = dataset.getTarget();
         target.setEpsilon(0.0);
-        Dataset predictions = target.predict(createSinglePrediction());
-        System.out.println(predictions.getDataset().toString());
+        PredictionValue predictions = target.predict(createSinglePrediction());
+        System.out.println(predictions);
     }
 
-    private Dataset createSinglePrediction() {
+    private Collection<Value> createSinglePrediction() {
         Map<Integer, CategoricalVariable> variableMap = createHeaderMap();
-        Table<Long, Variable, Value> data = HashBasedTable.create();
-        data.put(0L, variableMap.get(0), new CategoricalValue("sunny", variableMap.get(0)));
-        data.put(0L, variableMap.get(1), new CategoricalValue("cool", variableMap.get(1)));
-        data.put(0L, variableMap.get(2), new CategoricalValue("normal", variableMap.get(2)));
-        data.put(0L, variableMap.get(3), new CategoricalValue("false", variableMap.get(3)));
-        BaseDataset ds = new BaseDataset(data);
-        return ds;
+        Collection<Value> data = new HashSet<>();
+        data.add(new CategoricalValue("sunny", variableMap.get(0)));
+        data.add(new CategoricalValue("cool", variableMap.get(1)));
+        data.add(new CategoricalValue("normal", variableMap.get(2)));
+        data.add(new CategoricalValue("false", variableMap.get(3)));
+        return data;
     }
 
     private Dataset createMockPredictionDataset() {

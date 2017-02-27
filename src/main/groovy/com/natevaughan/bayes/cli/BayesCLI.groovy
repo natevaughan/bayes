@@ -4,8 +4,14 @@ import com.google.common.collect.Table
 import com.natevaughan.bayes.dataset.BaseDataset
 import com.natevaughan.bayes.dataset.Dataset
 import com.natevaughan.bayes.predictor.BayesianCountProcessor
+import com.natevaughan.bayes.predictor.NaiveSparsePredictor
+import com.natevaughan.bayes.predictor.Predictor
 import com.natevaughan.bayes.predictor.SelectAllVariablesProcessor
 import com.natevaughan.bayes.predictor.SimpleProcessingChain
+import com.natevaughan.bayes.variable.BinaryTarget
+import com.natevaughan.bayes.variable.CategoricalValue
+import com.natevaughan.bayes.variable.CategoricalVariable
+import com.natevaughan.bayes.variable.Target
 import com.natevaughan.bayes.variable.Value
 import com.natevaughan.bayes.variable.Variable
 import groovy.transform.CompileStatic
@@ -13,14 +19,30 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class BayesCLI {
 
+    static List<Predictor> predictors = new ArrayList<>()
+    static Predictor currentPredictor
+    static Reader reader = System.in.newReader()
+
     static void main(String[] args) {
-        Reader reader = System.in.newReader()
         println 'what would you like to do?'
         String action = ''
         while (!Actions.QUIT.is(action)) {
-            action = reader.readLine()
+            action = getLine()
             if (Actions.NEW.is(action)) {
-                println 'creating new target'
+                println 'give your dataset a name:'
+                String name = getLine()
+                println 'enter the column name of your target variable:'
+                String targetName = getLine()
+                println 'enter the value you would like to target:'
+                String targetValName = getLine()
+                CategoricalVariable targetVar = new CategoricalVariable(targetName)
+                Value targetVal = new CategoricalValue(targetValName, targetVar)
+                Target t = new BinaryTarget(targetVar, targetVal)
+                t.setEpsilon(5.0D)
+                NaiveSparsePredictor predictor = new NaiveSparsePredictor(t)
+                predictor.name = name
+                predictors.add(predictor)
+                currentPredictor = predictor
             }
             if (Actions.OPTIMIZE.is(action)) {
                 println 'reprocessing target'
@@ -29,13 +51,30 @@ class BayesCLI {
                 println 'ok, let\'s make some predictions'
             }
             if (Actions.TRAIN.is(action)) {
-                println 'ready to trailAll target'
+                println 'please specify a file path:\n'
+                String path = getLine()
+                File file = new File(path)
+                println 'file exists: ' + file.exists()
+                println 'file is file: ' + file.isFile()
+                println 'first line: ' + file.newReader().readLine()
             }
-            if (Actions.TARGETS.is(action)) {
+            if (Actions.LIST.is(action)) {
                 println 'here are your available targets'
+                for (Predictor ds : predictors) {
+                    println ds.name
+                }
             }
         }
         println 'bye'
+    }
+
+    static String getLine() {
+        String line = reader.readLine()
+        if (line == null || line == "") {
+            println "error, please try again"
+            line = reader.readLine()
+        }
+        return line
     }
 
     Dataset process(Table<Long, Variable, Value> data) {

@@ -39,21 +39,12 @@ public class SparseDatasetTest {
             new Tuple2(targetAntiVal, "This is the 3rd time I have booked with Rocket Miles to show and find out the place I'm staying at has some type of renovation going on.  Not good.")
     });
 
-    // XXX todo port to Spock
     @Test
     public void simpleSparsePredictorTest() {
         NaiveSparsePredictor predictor = createSparsePredictor();
         predictor.trainAll(createTrainingRows());
-        System.out.println(predictor.predict(LinesToValuesProcessor.convert("small compare fake email third")));
-        System.out.println(predictor.predict(LinesToValuesProcessor.convert("lying fake miles never")));
-        System.out.println(predictor.predict(LinesToValuesProcessor.convert("good Rocketmiles did not")));
+        System.out.println(predictor.predict(LinesToValuesProcessor.convert("you did not return my phone calls")));
         System.out.println("------------------------");
-        for (Tuple2<Value, String> tuple2 : trainingData) {
-            System.out.println("Predicted " + tuple2.getFirst().getName() + ", was " + predictor.predict(LinesToValuesProcessor.convert(tuple2.getSecond())));
-        }
-//        assertNotNull(prediction);
-//        assertTrue(prediction.getVariable().equals(targetVar));
-//        assertTrue(prediction.getName().equals(false));
     }
 
     private Collection<Tuple2<Value, Collection<Value>>> createTrainingRows() {
@@ -66,7 +57,7 @@ public class SparseDatasetTest {
 
     private NaiveSparsePredictor createSparsePredictor() {
         Target t = new BinaryTarget(targetVar, targetVal);
-        t.setEpsilon(5.0D);
+        t.setEpsilon(.1D);
         NaiveSparsePredictor predictor = new NaiveSparsePredictor(t);
         return predictor;
     }
