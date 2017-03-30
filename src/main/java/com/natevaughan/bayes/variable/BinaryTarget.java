@@ -5,9 +5,14 @@ import com.natevaughan.bayes.dataset.Dataset;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by nate on 2/1/17.
@@ -59,6 +64,7 @@ public class BinaryTarget implements Target {
     }
 
     public PredictionValue predict(Collection<Value> values) {
+        Set<ContributionRatio> contributionRatios = new TreeSet<>();
         BigDecimal likelihoodPositive = new BigDecimal(1.0);
         BigDecimal likelihoodNegative = new BigDecimal(1.0);
         Integer wordcount = 0;
@@ -80,12 +86,16 @@ public class BinaryTarget implements Target {
                     negativeCount += counts.get(val);
                 }
             }
+            ContributionRatio ratio = new ContributionRatio();
+            ratio.setValue(value);
+            ratio.setRatio((positiveCount.doubleValue() + epsilon)/(negativeCount.doubleValue() + 2 * epsilon));
+            contributionRatios.add(ratio);
             likelihoodPositive = likelihoodPositive.multiply(new BigDecimal(positiveCount.doubleValue() + epsilon));
             likelihoodNegative = likelihoodNegative.multiply(new BigDecimal(negativeCount.doubleValue() + epsilon));
         }
         likelihoodPositive = likelihoodPositive.divide(new BigDecimal(Math.pow(positiveCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
         likelihoodNegative = likelihoodNegative.divide(new BigDecimal(Math.pow(negativeCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
-        return new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable);
+        return new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable, contributionRatios);
     }
 
     public void setRelevantVariables(Collection<Variable> variables) {

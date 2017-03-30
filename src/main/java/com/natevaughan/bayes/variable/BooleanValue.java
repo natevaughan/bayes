@@ -41,6 +41,6 @@ public class BooleanValue extends AbstractValue {
 
     @Override
     public String toString() {
-        return name.toString();
+        return variable.getName() + ":" + name.toString();
     }
 }

@@ -21,8 +21,11 @@ class LinesToValuesProcessor {
     }
 
     static Collection<Value> convert(Collection<String> words) {
-        List<Value> values = new ArrayList<Value>()
+        Set<Value> values = new HashSet<Value>()
         for (String word in words) {
+            if (["a", "an", "and", "the"].contains(word)) {
+                continue
+            }
             values << new BooleanValue(true, new CategoricalVariable(word))
         }
         return values

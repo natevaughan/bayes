@@ -19,4 +19,6 @@ public interface Target {
     void setRelevantVariables(Collection<Variable> variables);
     Double getEpsilon();
     void setEpsilon(Double epsilon);
+    Long getPositiveCount();
+    Long getNegativeCount();
 }

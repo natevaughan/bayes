@@ -41,6 +41,6 @@ public class CategoricalValue extends AbstractValue {
 
     @Override
     public String toString() {
-        return name;
+        return variable.getName() + ":" + name.toString();
     }
 }
