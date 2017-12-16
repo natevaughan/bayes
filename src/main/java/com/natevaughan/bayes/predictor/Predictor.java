@@ -1,7 +1,7 @@
 package com.natevaughan.bayes.predictor;
 
+import com.natevaughan.Tuple2;
 import com.natevaughan.bayes.variable.Value;
-import groovy.lang.Tuple2;
 
 import java.util.Collection;
 

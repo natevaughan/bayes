@@ -1,10 +1,10 @@
 package com.natevaughan.bayes.predictor;
 
+import com.natevaughan.Tuple2;
 import com.natevaughan.bayes.variable.PredictionValue;
 import com.natevaughan.bayes.variable.Target;
 import com.natevaughan.bayes.variable.Value;
 import com.natevaughan.bayes.variable.Variable;
-import groovy.lang.Tuple2;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;

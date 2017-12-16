@@ -53,7 +53,7 @@ class SimpleDatasetTest extends Specification {
     }
 
     def setup() {
-        FileReader is = new FileReader("src/test/resources/simple.csv")
+        FileReader is = new FileReader("src/test/resources/simple.csv.sample")
         CSVReader reader = new CSVReader(is)
         String[] headerKeys = reader.readNext()
         Integer ratingIndex
