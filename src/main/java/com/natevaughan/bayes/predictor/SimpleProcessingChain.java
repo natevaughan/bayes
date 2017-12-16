@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nate on 2/1/17.
+ * @author Nate Vaughan
  */
 public class SimpleProcessingChain implements ProcessingChain {
 

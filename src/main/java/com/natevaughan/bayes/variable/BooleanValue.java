@@ -1,7 +1,7 @@
 package com.natevaughan.bayes.variable;
 
 /**
- * Created by nate on 2/3/17.
+ * @author Nate Vaughan
  */
 public class BooleanValue extends AbstractValue {
 

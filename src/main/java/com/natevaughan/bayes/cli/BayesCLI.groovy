@@ -5,7 +5,7 @@ import com.natevaughan.bayes.dataset.BaseDataset
 import com.natevaughan.bayes.dataset.Dataset
 import com.natevaughan.bayes.predictor.BayesianCountProcessor
 import com.natevaughan.bayes.predictor.NaiveSparsePredictor
-import com.natevaughan.bayes.predictor.Predictor
+import com.natevaughan.bayes.predictor.java
 import com.natevaughan.bayes.predictor.SelectAllVariablesProcessor
 import com.natevaughan.bayes.predictor.SimpleProcessingChain
 import com.natevaughan.bayes.variable.BinaryTarget
@@ -19,8 +19,8 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class BayesCLI {
 
-    static List<Predictor> predictors = new ArrayList<>()
-    static Predictor currentPredictor
+    static List<java> predictors = new ArrayList<>()
+    static java currentPredictor
     static Reader reader = System.in.newReader()
 
     static void main(String[] args) {
@@ -60,7 +60,7 @@ class BayesCLI {
             }
             if (Actions.LIST.is(action)) {
                 println 'here are your available targets'
-                for (Predictor ds : predictors) {
+                for (java ds : predictors) {
                     println ds.name
                 }
             }

@@ -8,7 +8,7 @@ import com.natevaughan.bayes.variable.Variable;
 import java.util.Collection;
 
 /**
- * Created by nate on 1/30/17.
+ * @author Nate Vaughan
  */
 public interface Dataset {
     Table<Long, Variable, Value> getDataset();

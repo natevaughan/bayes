@@ -5,5 +5,4 @@ gradle
 gradlew
 /.idea
 *.iml
-bfg-1.12.15.jar
-
+*.csv

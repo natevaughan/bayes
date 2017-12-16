@@ -1,7 +1,7 @@
 package com.natevaughan.bayes.dataset;
 
 /**
- * Created by nate on 1/30/17.
+ * @author Nate Vaughan
  */
 public interface AffinityStrategy {
 }

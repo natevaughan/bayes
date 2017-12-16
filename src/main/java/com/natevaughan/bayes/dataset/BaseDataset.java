@@ -8,7 +8,7 @@ import com.natevaughan.bayes.variable.Variable;
 import java.util.Collection;
 
 /**
- * Created by nate on 2/1/17.
+ * @author Nate Vaughan
  */
 public class BaseDataset implements Dataset {
 

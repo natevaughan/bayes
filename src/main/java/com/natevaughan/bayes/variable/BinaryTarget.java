@@ -1,21 +1,14 @@
 package com.natevaughan.bayes.variable;
 
-import com.google.common.collect.Table;
-import com.natevaughan.bayes.dataset.Dataset;
-
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * Created by nate on 2/1/17.
+ * @author Nate Vaughan
  */
 public class BinaryTarget implements Target {
 
@@ -64,37 +57,40 @@ public class BinaryTarget implements Target {
     }
 
     public PredictionValue predict(Collection<Value> values) {
+
         Set<ContributionRatio> contributionRatios = new TreeSet<>();
-        BigDecimal likelihoodPositive = new BigDecimal(1.0);
-        BigDecimal likelihoodNegative = new BigDecimal(1.0);
-        Integer wordcount = 0;
+
+        BigDecimal likelihoodPositive = new BigDecimal(positiveCount.doubleValue() / (positiveCount + negativeCount));
+        BigDecimal likelihoodNegative = new BigDecimal(negativeCount.doubleValue() / (positiveCount + negativeCount));
+
         for (Value value : values) {
             Variable relevant = this.relevantVariables.get(value.getVariable());
             if (relevant == null) {
                 continue;
-            } else {
-                ++wordcount;
             }
+
             Value varVal = relevant.getValue(value);
             Map<Value, Long> counts = varVal.getCounts(targetVariable);
-            Long positiveCount = 0L;
-            Long negativeCount = 0L;
+            Long positiveValCount = 0L;
+            Long negativeValCount = 0L;
             for (Value val : counts.keySet()) {
                 if (isPositive(val)) {
-                    positiveCount += counts.get(val);
+                    positiveValCount += counts.get(val);
                 } else {
-                    negativeCount += counts.get(val);
+                    negativeValCount += counts.get(val);
                 }
             }
-            ContributionRatio ratio = new ContributionRatio();
-            ratio.setValue(value);
-            ratio.setRatio((positiveCount.doubleValue() + epsilon)/(negativeCount.doubleValue() + 2 * epsilon));
+
+            Double positiveRatio = (positiveValCount.doubleValue() + epsilon) / (positiveCount + epsilon);
+            Double negativeRatio = (negativeValCount.doubleValue() + epsilon) / (negativeCount + epsilon);
+
+            ContributionRatio ratio = new ContributionRatio(value, (positiveRatio)/(negativeRatio));
             contributionRatios.add(ratio);
-            likelihoodPositive = likelihoodPositive.multiply(new BigDecimal(positiveCount.doubleValue() + epsilon));
-            likelihoodNegative = likelihoodNegative.multiply(new BigDecimal(negativeCount.doubleValue() + epsilon));
+
+            likelihoodPositive = likelihoodPositive.multiply(new BigDecimal(positiveRatio));
+            likelihoodNegative = likelihoodNegative.multiply(new BigDecimal(negativeRatio));
         }
-        likelihoodPositive = likelihoodPositive.divide(new BigDecimal(Math.pow(positiveCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
-        likelihoodNegative = likelihoodNegative.divide(new BigDecimal(Math.pow(negativeCount.doubleValue(), (wordcount - 1))), 1000, RoundingMode.HALF_UP);
+
         return new PredictionValue(likelihoodPositive, likelihoodNegative, targetVariable, contributionRatios);
     }
 

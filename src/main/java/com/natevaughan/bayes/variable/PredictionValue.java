@@ -6,7 +6,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Created by nate on 2/3/17.
+ * @author Nate Vaughan
  */
 public class PredictionValue extends BooleanValue {
 

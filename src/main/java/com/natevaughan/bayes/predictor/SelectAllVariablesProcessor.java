@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 /**
- * Created by nate on 2/3/17.
+ * @author Nate Vaughan
  */
 public class SelectAllVariablesProcessor implements DatasetProcessor {
 

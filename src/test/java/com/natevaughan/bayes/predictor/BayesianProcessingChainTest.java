@@ -19,7 +19,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 /**
- * Created by nate on 1/14/17.
+ * Author Nate Vaughan
  */
 public class BayesianProcessingChainTest {
 

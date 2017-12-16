@@ -4,7 +4,7 @@ import com.natevaughan.bayes.dataset.AffinityStrategy;
 import com.natevaughan.bayes.dataset.Dataset;
 
 /**
- * Created by nate on 1/30/17.
+ * @author Nate Vaughan
  */
 public class AffinityProcessor implements DatasetProcessor {
 

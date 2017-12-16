@@ -7,7 +7,7 @@ import com.natevaughan.bayes.variable.Value;
 import com.natevaughan.bayes.variable.Variable;
 
 /**
- * Created by nate on 2/1/17.
+ * @author Nate Vaughan
  */
 public class BayesianCountProcessor implements DatasetProcessor {
     public Dataset process(Dataset dataset) {

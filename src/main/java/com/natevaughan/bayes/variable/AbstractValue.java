@@ -6,7 +6,7 @@ import com.google.common.collect.Table;
 import java.util.Map;
 
 /**
- * Created by nate on 2/3/17.
+ * @author Nate Vaughan
  */
 public abstract class AbstractValue implements Value {
 

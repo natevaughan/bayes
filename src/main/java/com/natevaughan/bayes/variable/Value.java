@@ -3,7 +3,7 @@ package com.natevaughan.bayes.variable;
 import java.util.Map;
 
 /**
- * Created by nate on 1/30/17.
+ * @author Nate Vaughan
  */
 public interface Value {
     Variable getVariable();

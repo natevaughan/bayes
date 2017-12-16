@@ -1,13 +1,10 @@
 package com.natevaughan.bayes.variable;
 
-import com.natevaughan.bayes.dataset.Dataset;
-import groovy.lang.Tuple2;
-
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * Created by nate on 1/30/17.
+ * @author Nate Vaughan
  */
 public interface Target {
     Variable getTargetVariable();

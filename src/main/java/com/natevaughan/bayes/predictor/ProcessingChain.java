@@ -5,7 +5,7 @@ import com.natevaughan.bayes.dataset.Dataset;
 import java.util.List;
 
 /**
- * Created by nate on 2/1/17.
+ * @author Nate Vaughan
  */
 public interface ProcessingChain {
     List<DatasetProcessor> getProcessingSteps();
