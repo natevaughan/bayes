@@ -1,14 +1,17 @@
 package com.natevaughan.bayes.predictor
 
 import com.google.common.base.Stopwatch
+import groovy.util.logging.Slf4j
 
 import java.util.concurrent.Callable
 import java.util.concurrent.TimeUnit
 
 /**
- * Author Nate Vaughan
+ * @author Nate Vaughan
  */
+@Slf4j
 class StopwatchCallable implements Callable<String> {
+
     final int myname
 
     StopwatchCallable(int myname) {
@@ -24,7 +27,7 @@ class StopwatchCallable implements Callable<String> {
 
         String str = "$myname success! in ${stopwatch.elapsed(TimeUnit.MILLISECONDS)}"
 
-        println(str)
+        log.debug(str)
 
         return str
     }

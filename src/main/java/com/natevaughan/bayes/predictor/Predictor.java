@@ -1,7 +1,7 @@
 package com.natevaughan.bayes.predictor;
 
-import com.natevaughan.Tuple2;
 import com.natevaughan.bayes.variable.Value;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Collection;
 
@@ -12,8 +12,8 @@ import java.util.Collection;
  */
 public interface Predictor {
     String getName();
-    void train(Tuple2<Value, Collection<Value>> data);
-    void trainAll(Collection<Tuple2<Value, Collection<Value>>> data);
+    void train(Pair<Value, Collection<Value>> data);
+    void trainAll(Collection<Pair<Value, Collection<Value>>> data);
     Value predict(Collection<Value> data);
     void retrain();
 }

@@ -1,10 +1,11 @@
 package com.natevaughan.bayes.predictor;
 
-import com.natevaughan.Tuple2;
 import com.natevaughan.bayes.variable.PredictionValue;
 import com.natevaughan.bayes.variable.Target;
 import com.natevaughan.bayes.variable.Value;
 import com.natevaughan.bayes.variable.Variable;
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,7 +18,7 @@ public class NaiveSparsePredictor implements Predictor {
 
 	private final String name;
 	private final Target target;
-	private final List<Tuple2<Value, Collection<Value>>> data = new ArrayList<>();
+	private final List<Pair<Value, Collection<Value>>> data = new ArrayList<>();
 
 	NaiveSparsePredictor(String name, Target target) {
 		this.name = name;
@@ -30,17 +31,17 @@ public class NaiveSparsePredictor implements Predictor {
 	}
 
 	@Override
-	public void train(Tuple2<Value, Collection<Value>> data) {
+	public void train(Pair<Value, Collection<Value>> data) {
 		try {
-			train(data.getFirst(), data.getSecond());
+			train(data.getLeft(), data.getRight());
 		} catch (ParseException e) {
 		}
 	}
 
 	@Override
-	public void trainAll(Collection<Tuple2<Value, Collection<Value>>> data) {
+	public void trainAll(Collection<Pair<Value, Collection<Value>>> data) {
 
-		for (Tuple2<Value, Collection<Value>> values : data) {
+		for (Pair<Value, Collection<Value>> values : data) {
 			train(values);
 		}
 	}
@@ -84,7 +85,7 @@ public class NaiveSparsePredictor implements Predictor {
 			relevantVal.incrementCountFor(targetVal);
 		}
 
-		this.data.add(new Tuple2<>(targetVal, row));
+		this.data.add(Pair.of(targetVal, row));
 	}
 
 	@Override

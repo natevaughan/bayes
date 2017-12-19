@@ -1,6 +1,7 @@
 package com.natevaughan.bayes.predictor
 
 import com.google.common.base.Stopwatch
+import groovy.util.logging.Slf4j
 import org.junit.Test
 import spock.lang.Specification
 
@@ -12,6 +13,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Author Nate Vaughan
  */
+@Slf4j
 class ThreadingTest {
 
     @Test
@@ -24,14 +26,14 @@ class ThreadingTest {
             stringFutures << exec.submit( new StopwatchCallable(i))
         }
 
-        println("collecting futures")
+        log.debug("collecting futures")
 
         for (Future<String> stringFuture : stringFutures) {
             try {
                 String message = stringFuture.get(1000, TimeUnit.MILLISECONDS)
-                println("retrieved message in ${master.elapsed(TimeUnit.MILLISECONDS)}: \"$message\"")
+                log.debug("retrieved message in ${master.elapsed(TimeUnit.MILLISECONDS)}: \"$message\"")
             } catch (e) {
-                println(e.getClass().getSimpleName())
+                log.debug(e.getClass().getSimpleName())
             }
         }
 

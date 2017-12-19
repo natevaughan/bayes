@@ -6,3 +6,4 @@ gradlew
 /.idea
 *.iml
 *.csv
+out

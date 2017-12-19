@@ -12,16 +12,22 @@ import com.natevaughan.bayes.variable.Target;
 import com.natevaughan.bayes.variable.Value;
 import com.natevaughan.bayes.variable.Variable;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+import static org.junit.Assert.assertFalse;
+
 /**
- * Author Nate Vaughan
+ * @author Nate Vaughan
  */
 public class BayesianProcessingChainTest {
+
+    Logger log = LoggerFactory.getLogger(getClass());
 
     private final String TARGET_COLUMN_HEADER = "TARGET";
     private final String TARGET_VALUE = "yes";
@@ -55,7 +61,7 @@ public class BayesianProcessingChainTest {
         Target target = dataset.getTarget();
         target.setEpsilon(0.0);
         PredictionValue predictions = target.predict(createSinglePrediction());
-        System.out.println(predictions);
+        log.debug(predictions.toString());
     }
 
     private Collection<Value> createSinglePrediction() {

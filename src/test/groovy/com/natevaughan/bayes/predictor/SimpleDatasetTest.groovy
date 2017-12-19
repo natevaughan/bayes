@@ -97,5 +97,4 @@ class SimpleDatasetTest extends Specification {
         NaiveSparsePredictor predictor = new NaiveSparsePredictor("foo", t)
         return predictor
     }
-
 }
