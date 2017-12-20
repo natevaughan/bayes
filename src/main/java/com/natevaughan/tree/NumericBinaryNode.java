@@ -27,8 +27,9 @@ public class NumericBinaryNode implements Node {
 	}
 
 	@Override
-	public String getClassification(Map<String, Double> values) {
-		if (values.get(this.variable) >= threshold) {
+	public String getClassification(Map<String, Object> values) {
+		Double value = (Double) values.get(this.variable);
+		if (value >= threshold) {
 			return positiveNode.getClassification(values);
 		} else {
 			return negativeNode.getClassification(values);

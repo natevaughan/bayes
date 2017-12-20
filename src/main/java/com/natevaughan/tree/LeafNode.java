@@ -14,7 +14,7 @@ public class LeafNode implements Node {
 	}
 
 	@Override
-	public String getClassification(Map<String, Double> values) {
+	public String getClassification(Map<String, Object> values) {
 		return classification;
 	}
 }
